@@ -19,6 +19,7 @@ public class MyClient{
 			Adder stub=(Adder)Naming.lookup("rmi://192.168.0.86:5000/sonoo");
 
 			Scanner ler = new Scanner(System.in);
+			Scanner ler2 = new Scanner(System.in);
 			int opcao;
 			String name;
 			String topic; 
@@ -56,7 +57,7 @@ public class MyClient{
 					topic = ler.next();
 					topico = ("#"+topic);
 					System.out.print("Texto a ser postado: ");
-					texto = ler.next();
+					texto = ler2.nextLine();
 					timestamp = new Timestamp(System.currentTimeMillis());
 					//System.out.println(timestamp);
 					stub.InserePost(userName,topico,timestamp,texto);
@@ -80,12 +81,13 @@ public class MyClient{
 					System.out.print("Digite a data: ");
 					date = ler.next();
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    					Date parsedDate = dateFormat.parse(date);
-    					timestamp = new java.sql.Timestamp(parsedDate.getTime());
-    					posts = new ArrayList<String>();
-    					posts = stub.RetrieveTime(userName, timestamp);
-    					for(int i = 0; i < posts.size(); i++) {
-            				System.out.println(posts.get(i));
+   					Date parsedDate = dateFormat.parse(date);
+   					timestamp = new java.sql.Timestamp(parsedDate.getTime());
+   					posts = new ArrayList<String>();
+   					posts = stub.RetrieveTime(userName, timestamp);
+ 
+   					for(int i = 0; i < posts.size(); i++) {
+           				System.out.println(posts.get(i));
        				}
 				}
 				else if(opcao == 5){
@@ -100,16 +102,16 @@ public class MyClient{
 					System.out.print("Digite a data: ");
 					date = ler.next();
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    					Date parsedDate = dateFormat.parse(date);
-    					timestamp = new java.sql.Timestamp(parsedDate.getTime());
-    					posts = new ArrayList<String>();
-    					posts = stub.RetrieveTopic(userName, timestamp,topico);
-    					for(int i = 0; i < posts.size(); i++) {
-            				System.out.println(posts.get(i));
+    				Date parsedDate = dateFormat.parse(date);
+    				timestamp = new java.sql.Timestamp(parsedDate.getTime());
+    				posts = new ArrayList<String>();
+    				posts = stub.RetrieveTopic(userName, timestamp,topico);
+    				
+					for(int i = 0; i < posts.size(); i++) {
+            			System.out.println(posts.get(i));
        				}
 				}
 			}
-			System.out.println(stub.add(34,4));
 
 		}catch(Exception e){System.out.println(e);}
 	}
