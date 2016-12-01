@@ -7,7 +7,56 @@ import java.util.List;
 
 
 public class AdderRemote extends UnicastRemoteObject implements Adder{
-
+	
+	int Lider = 0;
+	int numEleitor = 1;
+	ListaCircular lista = new ListaCircular();
+	
+	public int adicionaEleitor(){
+		//adiciona um eleitor
+		No no = new No();
+		no.setId(numEleitor);
+		lista.add(no);
+		numEleitor++;
+		return (numEleitor - 1); 
+	}
+	
+	public int getLider(){
+		if (Lider==0){
+			Lider = Eleicao();	
+		}
+		return Lider;
+	}
+	
+	public void abdicar(int x){
+		No no = new No();
+		no.setId(x);
+		lista.delete(no);
+		if (Lider == x){
+			Lider = 0;
+			int aux = getLider();
+			
+		}
+	}
+	
+	public int Eleicao(){
+		No no3;
+		int menor = 100000;
+		
+		while(true){
+           	no3 = lista.getNo();
+            	//System.out.println(no3.getId());
+            	if(no3.getId()<menor && no3.getId()>=0){
+            		menor=no3.getId();
+            	}if(no3.getId()==menor){
+            		break;
+            	}
+            	lista.proximoNo();
+        	}
+        	return menor;		
+	}
+	
+	
 	AdderRemote()throws RemoteException{
 		super();
 	}

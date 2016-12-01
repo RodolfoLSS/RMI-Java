@@ -12,14 +12,18 @@ import java.util.InputMismatchException;
 public class MyClient{
 
 	public static void main(String args[]){
-
+		int lider=0;
+		int id=0;
 		try{
 
 			 //fazendo a conexão com o servidor
-			Adder stub=(Adder)Naming.lookup("rmi://192.168.0.86:5000/sonoo");
-
+			Adder stub=(Adder)Naming.lookup("rmi://localhost:5000/sonoo");
+			
+			id = stub.adicionaEleitor();
+			System.out.println(id);
+			stub.getLider();
+			
 			Scanner ler = new Scanner(System.in);
-			Scanner ler2 = new Scanner(System.in);
 			int opcao;
 			String name;
 			String topic; 
@@ -30,13 +34,14 @@ public class MyClient{
 			Timestamp timestamp;
 			List<String> posts = new ArrayList<String>();
 			while(true){
-
-				System.out.println("1 - follow\n2 - post\n3 - unsubscribe\n4 - retrievetime\n5 - retrievetopic\n0 - Sair\nOpcao:");
+				stub.getLider();
+				System.out.println("1 - follow\n2 - post\n3 - unsubscribe\n4 - retrievetime\n5 - retrievetopic\n6 - Mostrar Lider\n0 - Sair\nOpcao:");
 				opcao = ler.nextInt();
 
-				if(opcao == 0)
+				if(opcao == 0){
+					stub.abdicar(id);
 					break;
-
+				}
 				else if(opcao == 1){
 
 					System.out.print("Digite o nome do usuário: ");
@@ -45,7 +50,6 @@ public class MyClient{
 					System.out.print("Digite o tópico em que quer Seguir: ");
 					topic = ler.next();
 					stub.Follow(userName,topic);
-					
 					
 				}
 				else if(opcao == 2){
@@ -57,7 +61,7 @@ public class MyClient{
 					topic = ler.next();
 					topico = ("#"+topic);
 					System.out.print("Texto a ser postado: ");
-					texto = ler2.nextLine();
+					texto = ler.next();
 					timestamp = new Timestamp(System.currentTimeMillis());
 					//System.out.println(timestamp);
 					stub.InserePost(userName,topico,timestamp,texto);
@@ -81,13 +85,12 @@ public class MyClient{
 					System.out.print("Digite a data: ");
 					date = ler.next();
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-   					Date parsedDate = dateFormat.parse(date);
-   					timestamp = new java.sql.Timestamp(parsedDate.getTime());
-   					posts = new ArrayList<String>();
-   					posts = stub.RetrieveTime(userName, timestamp);
- 
-   					for(int i = 0; i < posts.size(); i++) {
-           				System.out.println(posts.get(i));
+    					Date parsedDate = dateFormat.parse(date);
+    					timestamp = new java.sql.Timestamp(parsedDate.getTime());
+    					posts = new ArrayList<String>();
+    					posts = stub.RetrieveTime(userName, timestamp);
+    					for(int i = 0; i < posts.size(); i++) {
+            				System.out.println(posts.get(i));
        				}
 				}
 				else if(opcao == 5){
@@ -102,18 +105,23 @@ public class MyClient{
 					System.out.print("Digite a data: ");
 					date = ler.next();
 					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    				Date parsedDate = dateFormat.parse(date);
-    				timestamp = new java.sql.Timestamp(parsedDate.getTime());
-    				posts = new ArrayList<String>();
-    				posts = stub.RetrieveTopic(userName, timestamp,topico);
-    				
-					for(int i = 0; i < posts.size(); i++) {
-            			System.out.println(posts.get(i));
+    					Date parsedDate = dateFormat.parse(date);
+    					timestamp = new java.sql.Timestamp(parsedDate.getTime());
+    					posts = new ArrayList<String>();
+    					posts = stub.RetrieveTopic(userName, timestamp,topico);
+    					for(int i = 0; i < posts.size(); i++) {
+            				System.out.println(posts.get(i));
        				}
+				}
+				else if(opcao == 6){
+
+					lider = stub.getLider();
+					System.out.println("Lider : "+lider);
 				}
 			}
 
 		}catch(Exception e){System.out.println(e);}
+		
 	}
 
 }
