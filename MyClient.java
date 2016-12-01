@@ -17,13 +17,14 @@ public class MyClient{
 		try{
 
 			 //fazendo a conexão com o servidor
-			Adder stub=(Adder)Naming.lookup("rmi://localhost:5000/sonoo");
+			Adder stub=(Adder)Naming.lookup("rmi://192.168.0.86:5000/sonoo");
 			
 			id = stub.adicionaEleitor();
 			System.out.println(id);
 			stub.getLider();
 			
 			Scanner ler = new Scanner(System.in);
+			Scanner ler2 = new Scanner(System.in);
 			int opcao;
 			String name;
 			String topic; 
@@ -54,6 +55,9 @@ public class MyClient{
 				}
 				else if(opcao == 2){
 
+
+					while(stub.possoLerEscrever() == 1){;}
+					stub.naoPodeEscreverSet();
 					System.out.print("Postado por: ");
 					name = ler.next();
 					userName = ("@"+name);
@@ -61,10 +65,11 @@ public class MyClient{
 					topic = ler.next();
 					topico = ("#"+topic);
 					System.out.print("Texto a ser postado: ");
-					texto = ler.next();
+					texto = ler2.nextLine();
 					timestamp = new Timestamp(System.currentTimeMillis());
 					//System.out.println(timestamp);
 					stub.InserePost(userName,topico,timestamp,texto);
+					stub.podeEscreverSet();
 				}
 				else if(opcao == 3){
 
@@ -78,6 +83,8 @@ public class MyClient{
 				}
 				else if(opcao == 4){
 
+					while(stub.possoLerEscrever() == 1){;}
+					stub.naoPodeEscreverSet();
 					System.out.print("Digite o nome do usuário: ");
 					name = ler.next();
 					userName = ("@"+name);
@@ -92,9 +99,12 @@ public class MyClient{
     					for(int i = 0; i < posts.size(); i++) {
             				System.out.println(posts.get(i));
        				}
+					stub.podeEscreverSet();
 				}
 				else if(opcao == 5){
 
+					while(stub.possoLerEscrever() == 1){;}
+					stub.naoPodeEscreverSet();
 					System.out.print("Digite o nome do usuário: ");
 					name = ler.next();
 					userName = ("@"+name);
@@ -112,6 +122,7 @@ public class MyClient{
     					for(int i = 0; i < posts.size(); i++) {
             				System.out.println(posts.get(i));
        				}
+					stub.podeEscreverSet();
 				}
 				else if(opcao == 6){
 

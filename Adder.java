@@ -11,6 +11,12 @@ import java.sql.Timestamp;
 
 public interface Adder extends Remote{
 
+	public void naoPodeEscreverSet() throws RemoteException;	
+
+	public void podeEscreverSet() throws RemoteException;
+
+	public int possoLerEscrever() throws RemoteException;
+
   	public int adicionaEleitor()throws RemoteException;	
   	
   	public int getLider()throws RemoteException;

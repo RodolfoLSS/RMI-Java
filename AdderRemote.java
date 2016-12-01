@@ -11,6 +11,22 @@ public class AdderRemote extends UnicastRemoteObject implements Adder{
 	int Lider = 0;
 	int numEleitor = 1;
 	ListaCircular lista = new ListaCircular();
+	int podeEscrever = 0;
+
+	public int possoLerEscrever(){
+
+		return podeEscrever;
+	}
+
+	public void podeEscreverSet(){
+
+		podeEscrever = 0;
+	}
+
+	public void naoPodeEscreverSet(){
+
+		podeEscrever = 1;
+	}
 	
 	public int adicionaEleitor(){
 		//adiciona um eleitor
@@ -42,15 +58,17 @@ public class AdderRemote extends UnicastRemoteObject implements Adder{
 	public int Eleicao(){
 		No no3;
 		int menor = 100000;
-		
+		int brk=0;
+		//System.out.println("------------------------------------------------------------");
 		while(true){
            	no3 = lista.getNo();
             	//System.out.println(no3.getId());
-            	if(no3.getId()<menor && no3.getId()>=0){
+            	if(no3.getId()<menor && no3.getId()>0){
             		menor=no3.getId();
-            	}if(no3.getId()==menor){
+            	}if(brk > numEleitor){
             		break;
             	}
+            	brk++;
             	lista.proximoNo();
         	}
         	return menor;		
